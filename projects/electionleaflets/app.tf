@@ -31,3 +31,19 @@ resource "aws_s3_bucket_object" "production_secrets" {
 }
   JSON
 }
+
+module "cdn_staging" {
+  source              = "./modules/cdn"
+  alias               = "staging.electionleaflets.org"
+  origin_domain_name  = "${var.staging_origin_domain_name}"
+  origin_path         = "${var.staging_origin_path}"
+  acm_certificate_arn = "${var.staging_acm_certificate_arn}"
+}
+
+module "cdn_production" {
+  source              = "./modules/cdn"
+  alias               = "www.electionleaflets.org"
+  origin_domain_name  = "${var.production_origin_domain_name}"
+  origin_path         = "${var.production_origin_path}"
+  acm_certificate_arn = "${var.production_acm_certificate_arn}"
+}
