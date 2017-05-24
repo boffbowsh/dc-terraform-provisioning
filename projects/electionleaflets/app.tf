@@ -38,6 +38,7 @@ module "cdn_staging" {
   origin_domain_name  = "${var.staging_origin_domain_name}"
   origin_path         = "${var.staging_origin_path}"
   acm_certificate_arn = "${var.staging_acm_certificate_arn}"
+  origin_protocol_policy = "${var.staging_origin_protocol_policy}"
 }
 
 module "cdn_production" {
@@ -46,4 +47,5 @@ module "cdn_production" {
   origin_domain_name  = "${var.production_origin_domain_name}"
   origin_path         = "${var.production_origin_path}"
   acm_certificate_arn = "${var.production_acm_certificate_arn}"
+  origin_protocol_policy = "${var.production_origin_protocol_policy}"
 }

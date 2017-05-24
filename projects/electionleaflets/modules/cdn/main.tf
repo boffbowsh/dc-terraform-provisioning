@@ -15,6 +15,11 @@ variable "acm_certificate_arn" {
   default = ""
 }
 
+variable "origin_protocol_policy" {
+  type = "string"
+  default = "https-only"
+}
+
 resource "aws_cloudfront_distribution" "distribution" {
   enabled = true
   aliases = ["${var.alias}"]
@@ -54,7 +59,7 @@ resource "aws_cloudfront_distribution" "distribution" {
       http_port                = 80
       https_port               = 443
       origin_keepalive_timeout = 5
-      origin_protocol_policy   = "https-only"
+      origin_protocol_policy   = "${var.origin_protocol_policy}"
       origin_read_timeout      = 30
       origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
