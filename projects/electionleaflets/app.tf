@@ -34,7 +34,7 @@ resource "aws_s3_bucket_object" "production_secrets" {
 
 module "cdn_staging" {
   source              = "./modules/cdn"
-  alias               = "staging.electionleaflets.org"
+  alias               = ["staging.electionleaflets.org"]
   origin_domain_name  = "${var.staging_origin_domain_name}"
   origin_path         = "${var.staging_origin_path}"
   acm_certificate_arn = "${var.staging_acm_certificate_arn}"
@@ -43,9 +43,26 @@ module "cdn_staging" {
 
 module "cdn_production" {
   source              = "./modules/cdn"
-  alias               = "www.electionleaflets.org"
+  alias               = ["electionleaflets.org"]
   origin_domain_name  = "${var.production_origin_domain_name}"
   origin_path         = "${var.production_origin_path}"
   acm_certificate_arn = "${var.production_acm_certificate_arn}"
   origin_protocol_policy = "${var.production_origin_protocol_policy}"
 }
+
+resource "aws_s3_bucket" "redirect_bucket" {
+  bucket   = "electionleaflets-redirect"
+
+  website {
+    redirect_all_requests_to = "https://electionleaflets.org"
+  }
+}
+
+module "cdn_redirect" {
+  source              = "./modules/cdn"
+  alias               = ["www.electionleaflets.org", "electionleaflet.org", "www.electionleaflet.org"]
+  origin_domain_name  = "${aws_s3_bucket.redirect_bucket.website_endpoint}"
+  acm_certificate_arn = "${var.production_acm_certificate_arn}"
+  origin_protocol_policy = "http-only"
+}
+

@@ -1,5 +1,5 @@
 variable "alias" {
-  type = "string"
+  type = "list"
 }
 
 variable "origin_domain_name" {
@@ -8,6 +8,7 @@ variable "origin_domain_name" {
 
 variable "origin_path" {
   type = "string"
+  default = ""
 }
 
 variable "acm_certificate_arn" {
@@ -22,7 +23,7 @@ variable "origin_protocol_policy" {
 
 resource "aws_cloudfront_distribution" "distribution" {
   enabled = true
-  aliases = ["${var.alias}"]
+  aliases = "${var.alias}"
 
   default_cache_behavior {
     allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
