@@ -13,7 +13,8 @@ resource "aws_s3_bucket_object" "staging_secrets" {
   "DATABASE_HOST": "${aws_db_instance.default.address}",
   "DATABASE_NAME": "${postgresql_database.electionleaflets_staging.name}",
   "DATABASE_USER": "${postgresql_role.electionleaflets_staging.name}",
-  "DATABASE_PASS": "${random_id.db_staging_password.b64}"
+  "DATABASE_PASS": "${random_id.db_staging_password.b64}",
+  "SENTRY_DSN": "${var.sentry_dsn}"
 }
   JSON
 }
@@ -27,7 +28,8 @@ resource "aws_s3_bucket_object" "production_secrets" {
   "DATABASE_HOST": "${aws_db_instance.default.address}",
   "DATABASE_NAME": "${postgresql_database.electionleaflets_production.name}",
   "DATABASE_USER": "${postgresql_role.electionleaflets_production.name}",
-  "DATABASE_PASS": "${random_id.db_production_password.b64}"
+  "DATABASE_PASS": "${random_id.db_production_password.b64}",
+  "SENTRY_DSN": "${var.sentry_dsn}"
 }
   JSON
 }
