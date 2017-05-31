@@ -70,6 +70,29 @@ resource "aws_cloudfront_distribution" "distribution" {
     origin_path = "${var.origin_path}"
   }
 
+  cache_behavior {
+    path_pattern = "static/*"
+    target_origin_id = "S3-data.electionleaflets.org"
+    allowed_methods = ["HEAD", "GET"]
+    cached_methods = ["HEAD", "GET"]
+    default_ttl = "0"
+    min_ttl = "0"
+    max_ttl = "0"
+    forwarded_values {
+      cookies {
+        forward = "none"
+      }
+      query_string = false
+    }
+    compress = true
+    viewer_protocol_policy = "allow-all"
+  }
+
+  origin {
+    domain_name = "data.electionleaflets.org.s3.amazonaws.com"
+    origin_id   = "S3-data.electionleaflets.org"
+  }
+
   restrictions {
     geo_restriction {
       restriction_type = "none"
