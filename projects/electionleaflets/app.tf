@@ -14,7 +14,9 @@ resource "aws_s3_bucket_object" "staging_secrets" {
   "DATABASE_NAME": "${postgresql_database.electionleaflets_staging.name}",
   "DATABASE_USER": "${postgresql_role.electionleaflets_staging.name}",
   "DATABASE_PASS": "${random_id.db_staging_password.b64}",
-  "SENTRY_DSN": "${var.sentry_dsn}"
+  "SENTRY_DSN": "${data.credstash_secret.sentry_dsn.value}",
+  "MAPIT_API_KEY": "${data.credstash_secret.mapit_api_key.value}",
+  "MAPIT_API_URL": "https://mapit.mysociety.org/"
 }
   JSON
 }
@@ -29,9 +31,19 @@ resource "aws_s3_bucket_object" "production_secrets" {
   "DATABASE_NAME": "${postgresql_database.electionleaflets_production.name}",
   "DATABASE_USER": "${postgresql_role.electionleaflets_production.name}",
   "DATABASE_PASS": "${random_id.db_production_password.b64}",
-  "SENTRY_DSN": "${var.sentry_dsn}"
+  "SENTRY_DSN": "${data.credstash_secret.sentry_dsn.value}",
+  "MAPIT_API_KEY": "${data.credstash_secret.mapit_api_key.value}",
+  "MAPIT_API_URL": "https://mapit.mysociety.org/"
 }
   JSON
+}
+
+data "credstash_secret" "sentry_dsn" {
+  name = "electionleaflets_sentry_dsn"
+}
+
+data "credstash_secret" "mapit_api_key" {
+  name = "electionleaflets_mapit_api_key"
 }
 
 module "cdn_staging" {

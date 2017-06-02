@@ -15,3 +15,8 @@ provider "aws" {
 data "aws_region" "current" {
   current = true
 }
+
+provider "credstash" {
+    table  = "credential-store"
+    region = "eu-west-1"
+}

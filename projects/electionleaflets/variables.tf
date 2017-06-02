@@ -32,6 +32,3 @@ variable "production_origin_protocol_policy" {
   default = "https-only"
 }
 
-variable "sentry_dsn" {
-  type = "string"
-}
